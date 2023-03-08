@@ -12,10 +12,11 @@ const authenticate = async (req, res, next) => {
   }
   try {
     const { id } = jwt.verify(token, SECRET_KEY);
-    const user = User.findById(id);
-    if (!user) {
+    const user = await User.findById(id);
+    if (!user || !user.token || user.token !== token) {
       next(HttpError(401, 'Yeblup! no user'));
     }
+    req.user = user;
     next();
   } catch {
     next(HttpError(401, 'Yeblup! not valide token'));
