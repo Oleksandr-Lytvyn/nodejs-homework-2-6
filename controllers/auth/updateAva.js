@@ -22,9 +22,9 @@ const updateAva = async (req, res) => {
   const avatarURL = path.join(avatarsDir, filename);
   console.log(avatarURL);
   try {
-    const { url: avatarUrl } = await cloudinary.uploader.upload(avatarURL);
-    await User.findByIdAndUpdate(req.user._id, { avatarUrl });
-    res.json({ avatarUrl });
+    const { url: newAvatar } = await cloudinary.uploader.upload(avatarURL);
+    await User.findByIdAndUpdate(req.user._id, { avatarURL: newAvatar });
+    res.json({ avatarURL: newAvatar });
     // console.log(result);
   } catch (error) {
     console.log(error);
